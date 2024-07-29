@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-family: 'Roboto', sans-serif;
+  background-color: lightgrey;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.container {
+  width: min(62.5rem, 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* HEADER */
+
+.header {
+  padding-block: 2rem;
+}
+
+.header__container {
+  background-color: aliceblue;
+  padding: 1rem;
+}
+
+/* CONTROLS */
+
+.controls {
+}
+
+.controls__container {
+  padding-block: 1rem;
+}
+
+.controls__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* GAME */
+
+.game {
+}
+
+.game__container {
+  padding-block-start: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game__board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 600px;
+  height: 600px;
+  cursor: default;
+}
+
+.game__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: green;
+  user-select: none;
+  -webkit-user-drag: none;
+}
