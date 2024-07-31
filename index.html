@@ -3,26 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Etch a Sketch</title>
+    <title>Creative Doodle</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header class="header">
       <div class="container header__container">
-        <h1>Etch-a-Sketch</h1>
+        <h1>Creative Doodle</h1>
       </div>
     </header>
     <main>
-      <section class="controls">
-        <div class="container controls__container">
-          <div class="controls__menu">
-            <button>First</button><button>Second</button><button>Third</button>
-          </div>
-        </div>
-      </section>
       <section class="game">
         <div class="container game__container">
-          <div class="game__board"></div>
+          <div class="game__menu">
+            <div class="game__menu__color">
+              <label for="color-picker">Select pen color</label>
+              <input type="color" value="#333333" class="color-picker" />
+            </div>
+            <div class="game__menu__size">
+              <label for="size-input">Select board size</label>
+              <input
+                type="range"
+                min="10"
+                max="100"
+                value="20"
+                id="size-input"
+              />
+              <p class="size-input-text"></p>
+            </div>
+          </div>
+          <div class="game__sketch">
+            <div class="game__sketch__board"></div>
+          </div>
         </div>
       </section>
     </main>

@@ -1,29 +1,56 @@
-const gameBoard = document.querySelector('.game__board');
-const cellCount = 50;
+const sizeInput = document.getElementById('size-input');
+const sizeInputText = document.querySelector('.size-input-text');
+const gameBoard = document.querySelector('.game__sketch__board');
 
-for (let i = 0; i < cellCount ** 2; i++) {
-  const gameCell = document.createElement('div');
-  gameCell.className = 'game__cell';
-  gameBoard.appendChild(gameCell);
-}
+let cellCount = sizeInput.value;
+sizeInputText.textContent = `${cellCount} x ${cellCount}`;
 
-const gameCellNodes = document.querySelectorAll('.game__cell');
+// Updates game board with a slider
 
-function adjustCellSize() {
-  const gameBoardSize = 600;
-  const totalCells = gameCellNodes.length;
+function updateGameBoard() {
+  sizeInput.addEventListener('input', () => {
+    sizeInputText.textContent = `${sizeInput.value} x ${sizeInput.value}`;
+  });
 
-  const columns = Math.ceil(Math.sqrt(totalCells));
-
-  const cellSize = gameBoardSize / columns;
-
-  gameCellNodes.forEach((cell) => {
-    cell.style.width = `${cellSize}px`;
-    cell.style.height = `${cellSize}px`;
+  sizeInput.addEventListener('mouseup', () => {
+    cellCount = sizeInput.value;
+    buildGameBoard();
   });
 }
 
-function handleCellFill() {
+updateGameBoard();
+
+// Clears game board
+
+function clearGameBoard() {
+  while (gameBoard.firstChild) {
+    gameBoard.removeChild(gameBoard.firstChild);
+  }
+}
+
+// Renders game board filled with cells with selected sizes
+
+function buildGameBoard() {
+  clearGameBoard();
+
+  gameBoard.style.gridTemplateColumns = `repeat(${cellCount}, 1fr)`;
+  gameBoard.style.gridTemplateRows = `repeat(${cellCount}, 1fr)`;
+
+  for (let i = 0; i < cellCount ** 2; i++) {
+    const gameCell = document.createElement('div');
+    gameCell.className = 'game__sketch__cell';
+    gameBoard.appendChild(gameCell);
+  }
+  const gameCellNodes = document.querySelectorAll('.game__sketch__cell');
+
+  handleCellFill(gameCellNodes);
+}
+
+// Fills out a game cell with selecter color based on mouse movement
+
+function handleCellFill(gameCellNodes) {
+  const colorPicker = document.querySelector('.color-picker');
+
   let isMouseDown = false;
 
   gameBoard.addEventListener('mousedown', () => {
@@ -36,16 +63,15 @@ function handleCellFill() {
 
   gameCellNodes.forEach((cell) => {
     cell.addEventListener('mousedown', () => {
-      cell.style.backgroundColor = 'red';
+      cell.style.backgroundColor = `${colorPicker.value}`;
     });
 
     cell.addEventListener('mouseenter', () => {
       if (isMouseDown) {
-        cell.style.backgroundColor = 'red';
+        cell.style.backgroundColor = `${colorPicker.value}`;
       }
     });
   });
 }
 
-handleCellFill();
-adjustCellSize();
+buildGameBoard();
