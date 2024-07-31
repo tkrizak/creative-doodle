@@ -1,6 +1,8 @@
 const sizeInput = document.getElementById('size-input');
 const sizeInputText = document.querySelector('.size-input-text');
 const gameBoard = document.querySelector('.game__sketch__board');
+const colorPicker = document.querySelector('.color-picker');
+const eraser = document.querySelector('.eraser');
 
 let cellCount = sizeInput.value;
 sizeInputText.textContent = `${cellCount} x ${cellCount}`;
@@ -26,6 +28,8 @@ function clearGameBoard() {
   while (gameBoard.firstChild) {
     gameBoard.removeChild(gameBoard.firstChild);
   }
+
+  eraser.classList.remove('selected');
 }
 
 // Renders game board filled with cells with selected sizes
@@ -49,9 +53,20 @@ function buildGameBoard() {
 // Fills out a game cell with selecter color based on mouse movement
 
 function handleCellFill(gameCellNodes) {
-  const colorPicker = document.querySelector('.color-picker');
-
+  let isSelected = false;
   let isMouseDown = false;
+
+  eraser.addEventListener('click', () => {
+    if (!isSelected) {
+      eraser.classList.add('selected');
+      isSelected = true;
+    } else {
+      eraser.classList.remove('selected');
+      isSelected = false;
+    }
+
+    console.log(isSelected);
+  });
 
   gameBoard.addEventListener('mousedown', () => {
     isMouseDown = true;
@@ -63,12 +78,20 @@ function handleCellFill(gameCellNodes) {
 
   gameCellNodes.forEach((cell) => {
     cell.addEventListener('mousedown', () => {
-      cell.style.backgroundColor = `${colorPicker.value}`;
+      if (isSelected) {
+        cell.style.backgroundColor = '#ffffff';
+      } else {
+        cell.style.backgroundColor = `${colorPicker.value}`;
+      }
     });
 
     cell.addEventListener('mouseenter', () => {
       if (isMouseDown) {
-        cell.style.backgroundColor = `${colorPicker.value}`;
+        if (isSelected) {
+          cell.style.backgroundColor = '#ffffff';
+        } else {
+          cell.style.backgroundColor = `${colorPicker.value}`;
+        }
       }
     });
   });

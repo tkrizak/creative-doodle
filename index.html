@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Creative Doodle</title>
     <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/7ff2ea44f7.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <header class="header">
@@ -16,11 +20,15 @@
       <section class="game">
         <div class="container game__container">
           <div class="game__menu">
-            <div class="game__menu__color">
+            <div class="game__menu__color underline">
               <label for="color-picker">Select pen color</label>
               <input type="color" value="#333333" class="color-picker" />
             </div>
-            <div class="game__menu__size">
+            <div class="game__menu__eraser underline">
+              <i class="fa-solid fa-eraser fa-2x" style="color: #212121"></i>
+              <button class="eraser">Eraser</button>
+            </div>
+            <div class="game__menu__size underline">
               <label for="size-input">Select board size</label>
               <input
                 type="range"

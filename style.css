@@ -15,7 +15,7 @@
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
-  line-height: 1.5;
+  line-height: 1;
   font-family: 'Caveat', cursive;
   background-color: hsl(0, 0%, 93%);
   color: #333333;
@@ -37,9 +37,25 @@ h1 {
   line-height: 1;
 }
 
+label {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+p {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .container {
   width: min(1100px, 100% - 2rem);
   margin-inline: auto;
+}
+
+.underline {
+  border-bottom: 2px solid #333333;
+  width: 100%;
 }
 
 /* HEADER */
@@ -68,22 +84,24 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 2rem;
+  width: 250px;
 }
 
 .game__menu__color {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 2rem;
 }
 
 .color-picker {
   appearance: none;
   -webkit-appearance: none;
-  margin-top: 1rem;
   border: none;
   height: 80px;
   width: 80px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .color-picker::-webkit-color-swatch {
@@ -92,16 +110,42 @@ h1 {
   padding: 0;
 }
 
+/* ERASER */
+
+.game__menu__eraser {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.eraser {
+  padding: 0.2em;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid #333333;
+}
+
+.eraser.selected {
+  color: hsl(0, 0%, 93%);
+  background-color: hsl(0, 0%, 20%);
+}
+
 .game__menu__size {
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
+  padding-bottom: 2rem;
 }
 
 #size-input {
   height: 30px;
   -webkit-appearance: none;
-  width: 200px;
+  width: 100%;
   background-color: transparent;
 }
 
