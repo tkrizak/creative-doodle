@@ -19,9 +19,35 @@ function updateGameBoard() {
     cellCount = sizeInput.value;
     buildGameBoard();
   });
+
+  sizeInput.addEventListener('touchend', () => {
+    cellCount = sizeInput.value;
+    buildGameBoard();
+  });
 }
 
 updateGameBoard();
+
+// Makes the slider adjust dynamically on window resizing and  different screen sizes
+
+function adjustMaxValue() {
+  const newMax = window.innerWidth < 600 ? 50 : 100;
+
+  if (sizeInput.value > newMax) {
+    sizeInput.value = newMax;
+    sizeInputText.textContent = `${newMax} x ${newMax}`;
+    cellCount = sizeInput.value;
+    buildGameBoard();
+  }
+  sizeInput.max = newMax;
+}
+
+window.addEventListener('resize', () => {
+  adjustMaxValue();
+  sizeInputText.textContent = `${sizeInput.value} x ${sizeInput.value}`;
+});
+
+adjustMaxValue();
 
 // Clears game board
 
@@ -31,7 +57,7 @@ function clearGameBoard() {
   }
 }
 
-// Renders game board filled with cells with selected sizes
+// Renders game board filled with empty cells based on selected size
 
 function buildGameBoard() {
   clearGameBoard();
@@ -44,82 +70,55 @@ function buildGameBoard() {
     gameCell.className = 'game__sketch__cell';
     gameBoard.appendChild(gameCell);
   }
+
   const gameCellNodes = document.querySelectorAll('.game__sketch__cell');
 
   handleCellFill(gameCellNodes);
 }
 
-// Fills out a game cell with selecter color based on mouse movement
+// Changes cell color fill based on given conditions like color picker, random color or erase on mouse movement
 
 function handleCellFill(gameCellNodes) {
   let isMouseDown = false;
 
+  function handleCellInteraction(cell) {
+    const randomColor = getRandomHexColor();
+
+    if (isErasing) {
+      cell.style.backgroundColor = '#ffffff';
+    } else if (randomColorToggled) {
+      colorPicker.value = randomColor;
+      cell.style.backgroundColor = randomColor;
+    } else {
+      cell.style.backgroundColor = `${colorPicker.value}`;
+    }
+  }
+
   gameBoard.addEventListener('mousedown', () => {
     isMouseDown = true;
   });
-
   gameBoard.addEventListener('mouseup', () => {
     isMouseDown = false;
+  });
+  gameBoard.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    isMouseDown = true;
   });
 
   gameCellNodes.forEach((cell) => {
     cell.addEventListener('mousedown', () => {
-      const randomColor = getRandomHexColor();
-
-      if (isErasing) {
-        cell.style.backgroundColor = '#ffffff';
-      } else if (randomColorToggled) {
-        colorPicker.value = randomColor;
-        cell.style.backgroundColor = randomColor;
-      } else {
-        cell.style.backgroundColor = `${colorPicker.value}`;
-      }
+      handleCellInteraction(cell);
     });
 
     cell.addEventListener('mouseenter', () => {
       if (isMouseDown) {
-        const randomColor = getRandomHexColor();
-
-        if (isErasing) {
-          cell.style.backgroundColor = '#ffffff';
-        } else if (randomColorToggled) {
-          colorPicker.value = randomColor;
-          cell.style.backgroundColor = randomColor;
-        } else {
-          cell.style.backgroundColor = `${colorPicker.value}`;
-        }
+        handleCellInteraction(cell);
       }
     });
-  });
-}
 
-// Toggles erasing button on different interactions with the game
-
-function toggleErasing() {
-  isErasing = false;
-
-  eraserBtn.addEventListener('click', () => {
-    if (!isErasing) {
-      eraserBtn.classList.add('selected');
-      isErasing = true;
-
-      randomColorBtn.classList.remove('selected');
-      randomColorToggled = false;
-    } else {
-      eraserBtn.classList.remove('selected');
-      isErasing = false;
-    }
-    console.log(isErasing);
-  });
-
-  colorPicker.addEventListener('click', () => {
-    eraserBtn.classList.remove('selected');
-    isErasing = false;
-  });
-
-  sizeInput.addEventListener('mouseup', () => {
-    eraserBtn.classList.remove('selected');
-    isErasing = false;
+    cell.addEventListener('touchstart', () => {
+      handleCellInteraction(cell);
+    });
   });
 }
 
@@ -140,28 +139,59 @@ function toggleRandomColor() {
 
   randomColorBtn.addEventListener('click', () => {
     if (!randomColorToggled) {
-      randomColorBtn.classList.add('selected');
+      randomColorBtn.classList.add('rainbow');
       randomColorToggled = true;
 
       eraserBtn.classList.remove('selected');
       isErasing = false;
     } else {
-      randomColorBtn.classList.remove('selected');
+      randomColorBtn.classList.remove('rainbow');
       randomColorToggled = false;
     }
   });
 
   colorPicker.addEventListener('click', () => {
-    randomColorBtn.classList.remove('selected');
+    randomColorBtn.classList.remove('rainbow');
     randomColorToggled = false;
   });
 
   sizeInput.addEventListener('mouseup', () => {
-    randomColorBtn.classList.remove('selected');
+    randomColorBtn.classList.remove('rainbow');
     randomColorToggled = false;
   });
 }
 
 toggleRandomColor();
+
+// Toggles erasing button on different interactions with the game
+
+function toggleErasing() {
+  isErasing = false;
+
+  eraserBtn.addEventListener('click', () => {
+    if (!isErasing) {
+      eraserBtn.classList.add('selected');
+      isErasing = true;
+
+      randomColorBtn.classList.remove('rainbow');
+      randomColorToggled = false;
+    } else {
+      eraserBtn.classList.remove('selected');
+      isErasing = false;
+    }
+  });
+
+  colorPicker.addEventListener('click', () => {
+    eraserBtn.classList.remove('selected');
+    isErasing = false;
+  });
+
+  sizeInput.addEventListener('mouseup', () => {
+    eraserBtn.classList.remove('selected');
+    isErasing = false;
+  });
+}
+
 toggleErasing();
+
 buildGameBoard();
